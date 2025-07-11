@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FreshFeast</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #fffdf5;
+    }
+    .box {
+      max-width: 400px;
+      margin: 60px auto;
+      padding: 20px;
+      border-radius: 10px;
+      background: #f0f0f0;
+      text-align: center;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #ff5722;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .header {
+      background-color: #fff3e0;
+      text-align: center;
+      padding: 15px;
+      border-bottom: 1px solid #ccc;
+    }
+    .header-title h1 {
+      color: red;
+      margin: 0;
+    }
+    .header-title p {
+      margin: 5px 0;
+      font-weight: bold;
+    }
+    .menu-icon {
+      position: absolute;
+      left: 15px;
+      top: 20px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 60px;
+      width: 200px;
+      background-color: #f5f5f5;
+      height: 100%;
+      padding: 10px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+    .sidebar ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .sidebar li {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #ddd;
+    }
+    .info-box {
+      padding: 15px;
+    }
+    .box-card {
+      background: #fce4ec;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .box-card h3 {
+      margin: 5px 0;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #ffe0b2;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+    }
+    .nav-item {
+      flex: 1;
+      text-align: center;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    a {
+      color: blue;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div id="login-section" class="box">
+    <h2>Login to FreshFeast</h2>
+    <input type="text" id="login-email" placeholder="Email or Mobile" />
+    <input type="password" id="login-password" placeholder="Password" />
+    <button onclick="login()">Login</button>
+    <p>Don’t have an account? <a href="#" onclick="switchTo('signup')">Sign up</a></p>
+  </div>
+
+  <!-- SIGNUP -->
+  <div id="signup-section" class="box" style="display: none;">
+    <h2>Sign Up for FreshFeast</h2>
+    <input type="text" id="signup-email" placeholder="Email or Mobile" />
+    <input type="password" id="signup-password" placeholder="Password" />
+    <input type="password" id="signup-confirm" placeholder="Confirm Password" />
+    <button onclick="signup()">Sign Up</button>
+    <p>Already have an account? <a href="#" onclick="switchTo('login')">Login</a></p>
+  </div>
+
+  <!-- HOME PAGE -->
+  <div id="home-section" style="display: none;">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div class="menu-icon" onclick="toggleMenu()">☰</div>
+      <div class="header-title">
+        <h1>FreshFeast</h1>
+        <p>Start your day in a healthy way</p>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div id="sidebar" class="sidebar" style="display: none;">
+      <ul>
+        <li onclick="showSection('about-us')">About Us</li>
+        <li onclick="showSection('my-orders')">My Orders</li>
+        <li onclick="showSection('order-history')">Order History</li>
+        <li onclick="showSection('contact')">Contact</li>
+      </ul>
+    </div>
+
+    <!-- SECTIONS -->
+    <div id="home-subscription" class="info-box">
+      <h2>Our Subscription Packages</h2>
+      <div class="box-card"><h3>Kids Energetic Box</h3><p>₹1799</p><button onclick="addToCart('Kids Energetic Box', 1799)">Add</button></div>
+      <div class="box-card"><h3>Regular Box</h3><p>₹1999</p><button onclick="addToCart('Regular Box', 1999)">Add</button></div>
+      <div class="box-card"><h3>Premium Box</h3><p>₹2199</p><button onclick="addToCart('Premium Box', 2199)">Add</button></div>
+    </div>
+
+    <div id="fruits" class="info-box">
+      <h2>Fruits</h2>
+      <div class="box-card"><h3>Apple</h3><p>₹300</p><button onclick="addToCart('Apple', 300)">Add</button></div>
+      <div class="box-card"><h3>Banana</h3><p>₹70</p><button onclick="addToCart('Banana', 70)">Add</button></div>
+    </div>
+
+    <div id="vegetables" class="info-box">
+      <h2>Vegetables</h2>
+      <div class="box-card"><h3>Carrot</h3><p>₹80</p><button onclick="addToCart('Carrot', 80)">Add</button></div>
+      <div class="box-card"><h3>Cucumber</h3><p>₹60</p><button onclick="addToCart('Cucumber', 60)">Add</button></div>
+    </div>
+
+    <!-- EARN SECTION -->
+    <div id="earn-section" class="info-box" style="display: none;"></div>
+
+  <!-- ABOUT -->
+<div id="about-us" class="info-box" style="display: none;">
+  <h2>About Us – FreshFeast</h2>
+  <ul style="line-height: 1.8;">
+    <li><strong>FreshFeast</strong> is a healthy meal and produce delivery service based in <strong>OMR, Chennai</strong>.</li>
+    <li>We specialize in <strong>fruit and vegetable subscription boxes</strong>, available weekly and monthly.</li>
+    <li>Our goal is to make <strong>healthy eating easy, affordable, and convenient</strong> for everyone.</li>
+    <li>Boxes like <strong>Kids Energetic Box, Regular Box, and Premium Box</strong> are carefully curated for taste and nutrition.</li>
+    <li>All produce is <strong>handpicked for freshness and quality</strong>.</li>
+    <li>We support <strong>local farmers</strong> and promote sustainable sourcing.</li>
+    <li>Ideal for <strong>busy professionals, health-conscious families, and children</strong>.</li>
+    <li>We ensure <strong>timely delivery</strong> right to your doorstep, reducing shopping hassle.</li>
+    <li>FreshFeast encourages a <strong>balanced diet with seasonal and hygienic items</strong>.</li>
+    <li>Our service helps save <strong>time, effort, and fuel</strong> while eating healthy.</li>
+    <li>Customers can <strong>track orders, view history, and manage subscriptions</strong> easily.</li>
+    <li>We offer <strong>referral rewards</strong> for sharing FreshFeast with friends and family.</li>
+    <li>With FreshFeast, you start your day the <strong>healthy way</strong>—naturally.</li>
+  </ul>
+</div>
+
+
+    <!-- MY ORDERS -->
+    <div id="my-orders" class="info-box" style="display: none;">
+      <h2>My Orders</h2>
+      <ul><li>Premium Plan – ₹2199 – 10 July</li></ul>
+    </div>
+
+    <!-- ORDER HISTORY -->
+    <div id="order-history" class="info-box" style="display: none;">
+      <h2>Order History</h2>
+      <ul><li>Regular Box – ₹1999 – Completed</li></ul>
+    </div>
+
+    <!-- CONTACT -->
+    <div id="contact" class="info-box" style="display: none;">
+      <h2>Contact</h2>
+      <p>Phone: <a href="tel:8074608712">8074608712</a></p>
+      <a href="https://wa.me/918074608712?text=Can%20I%20get%20more%20info%20about%20FreshFeast%3F" target="_blank">
+        <img src="https://img.icons8.com/color/48/000000/whatsapp--v1.png" alt="WhatsApp" style="width:32px;">
+      </a>
+    </div>
+
+    <!-- CART SECTION -->
+    <div id="cart-section" class="info-box" style="display: none;"></div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bottom-nav">
+      <div class="nav-item left" onclick="showAll()">Home</div>
+      <div class="nav-item center" onclick="showEarn()">Earn</div>
+      <div class="nav-item right" onclick="showCart()">Cart <span id="view-cart-count">(0)</span></div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    let cart = [];
+
+    function login() {
+      const email = document.getElementById("login-email").value;
+      const pass = document.getElementById("login-password").value;
+      if (email && pass) {
+        document.getElementById("login-section").style.display = "none";
+        document.getElementById("home-section").style.display = "block";
+      } else {
+        alert("Please enter email and password.");
+      }
+    }
+
+    function signup() {
+      const email = document.getElementById("signup-email").value;
+      const pass = document.getElementById("signup-password").value;
+      const confirm = document.getElementById("signup-confirm").value;
+      if (email && pass && pass === confirm) {
+        alert("Signup successful! Please login.");
+        switchTo("login");
+      } else {
+        alert("Check all fields. Passwords must match.");
+      }
+    }
+
+    function switchTo(mode) {
+      document.getElementById("login-section").style.display = mode === "login" ? "block" : "none";
+      document.getElementById("signup-section").style.display = mode === "signup" ? "block" : "none";
+    }
+
+    function toggleMenu() {
+      const sidebar = document.getElementById("sidebar");
+      sidebar.style.display = sidebar.style.display === "none" ? "block" : "none";
+    }
+
+    function showSection(id) {
+      const sections = [
+        "home-subscription", "fruits", "vegetables",
+        "about-us", "my-orders", "order-history", 
+        "contact", "cart-section", "earn-section"
+      ];
+      sections.forEach(sec => {
+        const el = document.getElementById(sec);
+        if (el) el.style.display = "none";
+      });
+      const activeEl = document.getElementById(id);
+      if (activeEl) activeEl.style.display = "block";
+    }
+
+    function showAll() {
+      showSection("home-subscription");
+      document.getElementById("fruits").style.display = "block";
+      document.getElementById("vegetables").style.display = "block";
+    }
+
+    function showEarn() {
+      showSection("earn-section");
+      const earnBox = document.getElementById("earn-section");
+      earnBox.innerHTML = `
+        <h2>💰 Refer & Earn</h2>
+        <p>Refer <strong>1 person</strong> – Earn <strong>₹200</strong></p>
+        <p>Refer <strong>2 people</strong> – Earn <strong>₹500</strong></p>
+        <p>Share your referral code/link to earn more!</p>
+      `;
+    }
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      updateCartCount();
+      alert(`${name} added to cart`);
+    }
+
+    function updateCartCount() {
+      document.getElementById("view-cart-count").innerText = `(${cart.length})`;
+    }
+
+    function showCart() {
+      showSection("cart-section");
+      const cartBox = document.getElementById("cart-section");
+      cartBox.innerHTML = `<h2>Your Cart</h2>`;
+
+      if (cart.length === 0) {
+        cartBox.innerHTML += `<p>Your cart is empty.</p>`;
+        return;
+      }
+
+      let total = 0;
+      let listHtml = "<ul>";
+      cart.forEach((item, index) => {
+        total += item.price;
+        listHtml += `<li>${item.name} - ₹${item.price} 
+        <span style="color:red; cursor:pointer;" onclick="removeFromCart(${index})">❌</span></li>`;
+      });
+      listHtml += "</ul>";
+      cartBox.innerHTML += listHtml;
+      cartBox.innerHTML += `<p><strong>Total: ₹${total}</strong></p>`;
+
+      let msg = encodeURIComponent(
+        "Hi! I want to order from FreshFeast:\n" +
+        cart.map(i => `• ${i.name} - ₹${i.price}`).join("\n") +
+        `\nTotal: ₹${total}`
+      );
+      let whatsappLink = `https://wa.me/918074608712?text=${msg}`;
+      cartBox.innerHTML += `<a href="${whatsappLink}" target="_blank">
+        <button style="background-color:#25D366; color:white; padding:10px 20px; border:none; border-radius:5px; margin-top:10px;">
+          Order via WhatsApp
+        </button></a>`;
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartCount();
+      showCart();
+    }
+  </script>
+</body>
+</html>
